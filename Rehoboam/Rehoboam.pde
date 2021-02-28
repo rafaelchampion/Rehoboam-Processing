@@ -60,7 +60,7 @@ void draw() {
       lastY = newY;
     }
     wavePos = 0;
-    endShape();
+    endShape(CLOSE);
   }
 
   drawCenterCircle();
