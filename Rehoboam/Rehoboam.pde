@@ -1,80 +1,74 @@
-float r;
-int waveAmount;
+//Experimental divergency factor to multiply the current wave's amplitude
+//DEFAULT: 15
+float divergenceSeverity = 20;
 
-float wavePosAdd = 50;
+//Interface radius
+//Greater radius affects performance
+//DEFAULT: 250
+float radius = 350;
 
-ArrayList<ArrayList<Wave>> allWaves = new ArrayList<ArrayList<Wave>>();
+//Amount of overlapping waves
+//Too many waves may reduce performance
+//DEFAULT: 20
+int waveAmount = 20;
+
+// Randomness of a single wave's period and amplitude
+// Too many components may smooth a wave too much
+//DEFAULT: 5
+int componentsPerWave = 5; 
+
+//Factor in which a wave's period will be traveled by the drawer
+//DEFAULT: 2
+float wavePosAdd = 2;
+
+//Minimum amplitude of a wave component
+//Affects a wave's shape
+//DEFAULT: 10
+float minComponentAmp = 10;
+
+//Maximum amplitude of a wave component
+//Affects a wave's shape
+//DEFAULT: 15
+float maxComponentAmp = 15;
+
+//Minimum period of a wave component
+//Affects a wave's shape
+//DEFAULT: 100
+float minComponentPeriod = 100;
+
+//Maximum period of a wave component
+//Affects a wave's shape
+//DEFAULT: 500
+float maxComponentPeriod = 500;
+
+ArrayList<Wave> waves = new ArrayList<Wave>();
 
 void setup() {
 
-  frameRate(1000);
-  size(800, 800);
-  r = 320;
-  waveAmount = 15;
+  frameRate(60);
+  fullScreen();
 
   for (int i = 0; i<waveAmount; i++) {
-    allWaves.add(new ArrayList<Wave>());
+    waves.add(new Wave(componentsPerWave, minComponentAmp, maxComponentAmp, minComponentPeriod, maxComponentPeriod));
   }
-
-  for (int i = 0; i < allWaves.size(); i++) {
-    allWaves.get(i).add(new Wave(random(10, 50), random(3000, 5000), random(TWO_PI), random(1) > 0.5));
-  }
-  frameRate(1000);
 }
 
 
 void draw() {
   background(255);
   translate(width/2, height/2);
-
-  fill(230);
+  fill(0, 0, 0, 30);
   noStroke();
 
-  float wavePos = 1;
-  float newY = 0;
-  float lastY = 0;
-
-  blendMode(MULTIPLY);
-
-  for (int k = 0; k < allWaves.size(); k++) {
-    beginShape();
-    for (float i=0; i<=TWO_PI; i+= 0.00628318530718) {
-      for (Wave wave : allWaves.get(k)) {
-        //EXPERIMENTAL DIVERGENCE
-        //TODO: Make a divergence object (peak amplitude, atuation length, duration, etc)
-        //TODO: Make a divergence array
-        //TODO: Dinamically create divergencies
-        //TODO: Dinamically check divergency array and deal properly
-        if(wavePos >= 5500 && wavePos <= 6500){
-          newY += wave.evaluate(wavePos) * (map(abs(6000-wavePos),500,0,1,20));
-        }
-        else{
-          newY += wave.evaluate(wavePos);
-        }
-        //newY += wave.evaluate(wavePos);
-      }
-      float x = (r + ((newY - lastY)/5))* sin(i);
-      float y = (r + ((newY - lastY)/5))* cos(i);
-      vertex(x, y);
-      wavePos+=wavePosAdd;
-      lastY = newY;
-    }
-    wavePos = 0;
-    endShape(CLOSE);
+  for (int i =0; i < waves.size(); i++) {
+    waves.get(i).Draw(radius, wavePosAdd);
   }
 
   drawCenterCircle();
-
-  for (int k = 0; k<allWaves.size(); k++) {
-    for (Wave wave : allWaves.get(k)) {
-      wave.update();
-    }
-  }
 }
 
 void drawCenterCircle() {
-  blendMode(BLEND);
   fill(255);
   noStroke();
-  ellipse(0, 0, 630, 630);
+  ellipse(0, 0, radius*2, radius*2);
 }
