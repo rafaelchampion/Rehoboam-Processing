@@ -9,7 +9,7 @@ Current state:
 
 Preview:
 
-![1.0 Rehoboam demo](/Demo/Rehoboam-2021-02-27-17-59-55.gif?)
+![1.0 Rehoboam demo](/Demo/Rehoboam-2021-02-27-17-59-55.gif)
 
 Next steps:
 
