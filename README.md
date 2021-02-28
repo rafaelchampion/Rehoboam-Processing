@@ -4,8 +4,10 @@ Replication of Westworld's Rehoboam interface using Processing
 
 Current state:
 
-• Ramdomness generated with additive waves incresing the wave's phase clockwise and counterclockwise
-• Starting the developement of the divergencies
+<ul>
+ <li>Ramdomness generated with additive waves incresing the wave's phase clockwise and counterclockwise;</li>
+ <li>Starting the developement of the divergencies;</li>
+</ul>
 
 Preview:
 
